@@ -34,10 +34,10 @@ if ( $.isNode() ) {
 const args = {
 	jdNotify: false,
 	pageSize: 12,
-	cidsList: ["家用电器", "手机数码", "电脑办公", "家居家装", "生鲜美食", "食品饮料", "更多惊喜"],
+	cidsList: ["家用电器", "手机数码", "电脑办公", "家居家装", "生鲜美食", "图书音像", "食品饮料", "更多惊喜"],
 	typeList: ["普通试用", "闪电试用"],
-	whiteList: ["情趣内衣"],
-	goodFilters: "教程@流量@软件@英语@辅导@培训小靓美@脚气@文胸@卷尺@种子@档案袋@癣@中年@老太太@妇女@私处@孕妇@卫生巾@卫生条@课@培训@阴道@生殖器@肛门@狐臭@少女内衣@胸罩@洋娃娃@男孩玩具@女孩玩具@益智@少女@女性内衣@女性内裤@女内裤@女内衣@女孩@鱼饵@钓鱼@童装@吊带@黑丝@钢圈@婴儿@儿童@玩具@幼儿@娃娃@网课@网校@电商@手机壳@钢化膜@车载充电器@网络课程@女纯棉@三角裤@美少女@纸尿裤@英语@俄语@四级@六级@四六级@在线网络@在线@阴道炎@宫颈@糜烂@打底裤@手机膜@鱼@狗@看房游@手机卡@油烟机".split('@'),
+	whiteList: ["情趣内衣","显示屏","华为手环","打印机","贵州茅台","青岛啤酒","燕京啤酒","精酿","茅台王子酒"],
+	goodFilters: "教程@流量@软件@英语@辅导@培训小靓美@脚气@文胸@卷尺@种子@档案袋@癣@中年@老太太@妇女@私处@孕妇@卫生巾@卫生条@课@培训@阴道@生殖器@肛门@狐臭@少女内衣@胸罩@洋娃娃@男孩玩具@女孩玩具@益智@少女@女性内衣@女性内裤@女内裤@女内衣@女孩@鱼饵@钓鱼@童装@吊带@黑丝@钢圈@婴儿@儿童@玩具@幼儿@娃娃@网课@网校@电商@手机壳@钢化膜@车载充电器@网络课程@女纯棉@三角裤@美少女@纸尿裤@英语@俄语@四级@六级@四六级@在线网络@在线@阴道炎@宫颈@糜烂@打底裤@手机膜@鱼@狗@看房游@手机卡@油烟机@病人@自慰@手机膜@手机壳".split('@'),
 	minPrice: 1000,
 	maxSupplyCount: 100,
 }
@@ -100,7 +100,10 @@ const typeMap = {
 
 				$.totalTry = 0
 				$.totalGoods = $.goodList.length
-				console.log(JSON.stringify($.goodList))
+
+				for (let item of $.goodList) {
+					console.log(JSON.stringify(item))
+				}
 				
 				await tryGoodList()
 				await getSuccessList()
@@ -228,7 +231,7 @@ async function getGoodList() {
 async function filterGoodList() {
 	console.log(`⏰ 过滤商品列表，当前共有${allGoodList.length}个商品`)
 	const now = Date.now()
-	const oneMoreDay = now + 24 * 60 * 60 * 1000 * 2
+	const oneMoreDay = now + 24 * 60 * 60 * 1000 * 5
 	$.goodList = allGoodList.filter(good => {
 		// 1. good 有问题
 		// 2. good 距离结束不到10min
@@ -240,7 +243,11 @@ async function filterGoodList() {
 			return false
 		}
 		for (let item of args.whiteList) {
-			if (good.trialName.indexOf(item) != -1) return true
+			if (good.trialName.indexOf(item) != -1) 
+			{
+				console.log(good.trialName + "  命中白名单：  " + item)
+				return true
+			}
 		}
 		if (good.jdPrice < args.minPrice) {
 			return false
@@ -252,6 +259,27 @@ async function filterGoodList() {
 			return false
 		}
 		return true
+		// if(!good)
+		// {
+		// 	return false
+		// }
+		// for (let item of args.goodFilters) { // 黑名单
+		// 	if (good.trialName.indexOf(item) != -1) return false
+		// }
+		// for (let item of args.whiteList) { // 白名单
+		// 	if (good.trialName.indexOf(item) != -1) return true
+		// }
+		// if(good.supplyCount == 1) // 申请一份
+		// {
+		// 	return true;
+		// }
+		// if (good.jdPrice < args.minPrice) { // 价格大于1000
+		// 	return false
+		// }
+		// if(good.supplyCount > args.maxSupplyCount){ // 申请一百份以上
+		// 	return false
+		// }
+		// return true
 
 	})
 	await getApplyStateByActivityIds()
