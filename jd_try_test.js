@@ -100,10 +100,6 @@ const typeMap = {
 
 				$.totalTry = 0
 				$.totalGoods = $.goodList.length
-
-				for (let item of $.goodList) {
-					console.log(JSON.stringify(item))
-				}
 				
 				await tryGoodList()
 				await getSuccessList()
