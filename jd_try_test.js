@@ -456,7 +456,17 @@ async function getSuccessList() {
 					data = JSON.parse(data)
 					if (data.success && data.data) {
 						$.successList = data.data.data.filter(item => {
-							return item.text.text.indexOf('请尽快领取') != -1
+							if(item.text.text.indexOf('请尽快领取') != -1)
+							{
+								try{
+									console.log(item.trialName);
+								}catch(e)
+								{
+									
+								}
+								return true;
+							}
+							return false;
 						})
 					} else {
 						console.log(`💩 获得成功列表失败: ${data.message}`)
