@@ -196,7 +196,13 @@ function getGoodListByCond(cids, page, pageSize, type, state) {
 				} else {
 					data = JSON.parse(data)
 					if (data.success) {
-						$.totalPages = data.data.pages
+						if(data.data.pages > $.totalPages)
+						{
+							$.totalPages = data.data.pages;
+						}else if(data.data.pages < $.totalPages)
+						{
+							console.log("cids:" + cids + ",currentpage:" + page + ", resppage:" + data.data.pages)
+						}
 						allGoodList = allGoodList.concat(data.data.data)
 					} else {
 						console.log(`💩 获得 ${cids} ${page} 列表失败: ${data.message}`)
