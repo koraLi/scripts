@@ -260,7 +260,11 @@ async function filterGoodList() {
 			return false
 		}
 		for (let item of args.goodFilters) {
-			if (good.trialName.indexOf(item) != -1) return false
+			if (good.trialName.indexOf(item) != -1) 
+			{
+				console.log(good.trialName + "  命中黑名单：  " + item + "   价格：  " + good.jdPrice)
+				return false
+			}
 		}
 		if(good.supplyCount > args.maxSupplyCount){
 			return false
