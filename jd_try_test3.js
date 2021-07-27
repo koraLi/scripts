@@ -459,6 +459,7 @@ async function doTry(good) {
 						console.log(`🤬 ${good.id} 🛒${good.trialName.substr(0,15)}🛒 ${JSON.stringify(data)}`)
 					}
 				}
+				resolve()
 			} catch (e) {
 				console.log("dotry出错")
 				sleep(1000)
