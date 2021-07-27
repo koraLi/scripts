@@ -104,7 +104,7 @@ const typeMap = {
 
 				$.goodList = []
 				$.successList = []
-				if (i == 0) {
+				if (i == (cookiesArr.length - 1)) {
 					await getGoodList()
 				}
 				await filterGoodList()
