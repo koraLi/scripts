@@ -330,9 +330,6 @@ async function getApplyStateByActivityIds() {
 						ids.length = 0
 						for (let apply of data) ids.push(apply.activityId)
 					}
-				} catch (e) {
-					reject(`⚠️ ${arguments.callee.name.toString()} API返回结果解析出错\n${e}\n${JSON.stringify(data)}`)
-				} finally {
 					$.goodList = $.goodList.filter(good => {
 						for (let id of ids) {
 							if (id == good.id) {
@@ -342,6 +339,14 @@ async function getApplyStateByActivityIds() {
 						return true
 					})
 					resolve()
+				} catch (e) {
+					console.log("getApplyStateByActivityIds 出错")
+					sleep(1000)
+					getApplyStateByActivityIds()
+					resolve()
+				} finally {
+					
+					
 				}
 			})
 		})
@@ -372,10 +377,14 @@ function canTry(good) {
 						good.shopId = eval(result[1])
 					}
 				}
-			} catch (e) {
-				reject(`⚠️ ${arguments.callee.name.toString()} API返回结果解析出错\n${e}\n${JSON.stringify(data)}`)
-			} finally {
 				resolve(ret)
+			} catch (e) {
+				console.log("cantry 出错")
+				sleep(1000)
+				canTry(good)
+				resolve(true)
+			} finally {
+				
 			}
 		})
 	})
@@ -409,6 +418,7 @@ function followShop(good) {
 			try {
 				if (err) {
 					console.log(`🚫 ${arguments.callee.name.toString()} API请求失败，请检查网路\n${JSON.stringify(err)}`)
+					resolve(false)
 				} else {
 					data = JSON.parse(data)
 					if (data.code == 'F0410') {
@@ -418,9 +428,12 @@ function followShop(good) {
 					resolve(data.success && data.data)
 				}
 			} catch (e) {
-				reject(`⚠️ ${arguments.callee.name.toString()} API返回结果解析出错\n${e}\n${JSON.stringify(data)}`)
+				console.log("followShop  出错")
+				sleep(1000)
+				followShop(good);
+				resolve(true)
 			} finally {
-				resolve(false)
+				
 			}
 		})
 	})
