@@ -666,6 +666,16 @@ function jsonParse(str) {
 	}
 }
 
+function sleep(numberMillis) {
+    var now = new Date();
+    var exitTime = now.getTime() + numberMillis;
+    while (true) {
+        now = new Date();
+        if (now.getTime() > exitTime)
+        return;
+        }
+}
+
 // 来自 @chavyleung 大佬
 // https://raw.githubusercontent.com/chavyleung/scripts/master/Env.js
 function Env(name, opts) {
