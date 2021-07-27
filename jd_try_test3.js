@@ -196,7 +196,7 @@ function requireConfig() {
 
 function getGoodListByCond(cids, page, pageSize, type, state) {
 	return new Promise((resolve, reject) => {
-		let option = taskurl(`${selfDomain}/activity/list?pb=1&cids=${cids}&page=${page}&pageSize=${pageSize}&type=${type}&state=${state}`)
+		let option = await taskurl(`${selfDomain}/activity/list?pb=1&cids=${cids}&page=${page}&pageSize=${pageSize}&type=${type}&state=${state}`)
 		delete option.headers['Cookie']
 		$.get(option, (err, resp, data) => {
 			try {
@@ -317,7 +317,7 @@ async function filterGoodList() {
 async function getApplyStateByActivityIds() {
 	function opt(ids) {
 		return new Promise((resolve, reject) => {
-			$.get(taskurl(`${selfDomain}/getApplyStateByActivityIds?activityIds=${ids.join(',')}`), (err, resp, data) => {
+			$.get(await taskurl(`${selfDomain}/getApplyStateByActivityIds?activityIds=${ids.join(',')}`), (err, resp, data) => {
 				try {
 					if (err) {
 						console.log(`🚫 ${arguments.callee.name.toString()} API请求失败，请检查网路\n${JSON.stringify(err)}`)
@@ -357,7 +357,7 @@ async function getApplyStateByActivityIds() {
 function canTry(good) {
 	return new Promise((resolve, reject) => {
 		let ret = false
-		$.get(taskurl(`${selfDomain}/activity?id=${good.id}`), (err, resp, data) => {
+		$.get(await taskurl(`${selfDomain}/activity?id=${good.id}`), (err, resp, data) => {
 			try {
 				if (err) {
 					console.log(`🚫 ${arguments.callee.name.toString()} API请求失败，请检查网路\n${JSON.stringify(err)}`)
@@ -379,7 +379,7 @@ function canTry(good) {
 
 function isFollowed(good) {
 	return new Promise((resolve, reject) => {
-		$.get(taskurl(`${selfDomain}/isFollowed?id=${good.shopId}`, good.id), (err, resp, data) => {
+		$.get(await taskurl(`${selfDomain}/isFollowed?id=${good.shopId}`, good.id), (err, resp, data) => {
 			try {
 				if (err) {
 					console.log(`🚫 ${arguments.callee.name.toString()} API请求失败，请检查网路\n${JSON.stringify(err)}`)
@@ -398,7 +398,7 @@ function isFollowed(good) {
 
 function followShop(good) {
 	return new Promise((resolve, reject) => {
-		$.get(taskurl(`${selfDomain}/followShop?id=${good.shopId}`, good.id), (err, resp, data) => {
+		$.get(await taskurl(`${selfDomain}/followShop?id=${good.shopId}`, good.id), (err, resp, data) => {
 			try {
 				if (err) {
 					console.log(`🚫 ${arguments.callee.name.toString()} API请求失败，请检查网路\n${JSON.stringify(err)}`)
@@ -437,7 +437,7 @@ async function tryGoodList() {
 
 async function doTry(good) {
 	return new Promise((resolve, reject) => {
-		$.get(taskurl(`${selfDomain}/migrate/apply?activityId=${good.id}&source=1&_s=m`, good.id), (err, resp, data) => {
+		$.get(await taskurl(`${selfDomain}/migrate/apply?activityId=${good.id}&source=1&_s=m`, good.id), (err, resp, data) => {
 			try {
 				if (err) {
 					console.log(`🚫 ${arguments.callee.name.toString()} API请求失败，请检查网路\n${JSON.stringify(err)}`)
@@ -523,7 +523,7 @@ async function showMsg() {
 	}
 }
 
-function taskurl(url, goodId) {
+async function taskurl(url, goodId) {
 	await $.wait(1000)
 	return {
 		'url': url,
