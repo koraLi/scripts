@@ -11,10 +11,10 @@ update 2021/4/11
 # 取关京东店铺商品，请在 boxjs 修改取消关注店铺数量
 5 10 * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_unsubscribe.js, tag=取关京东店铺商品, enabled=true
 
-# 京东试用
-30 10 * * * https://raw.githubusercontent.com/ZCY01/daily_scripts/main/jd/jd_try.js, tag=京东试用, img-url=https://raw.githubusercontent.com/ZCY01/img/master/jdtryv1.png, enabled=true
+# 京东试用3
+30 10 * * * https://raw.githubusercontent.com/ZCY01/daily_scripts/main/jd/jd_try.js, tag=京东试用3, img-url=https://raw.githubusercontent.com/ZCY01/img/master/jdtryv1.png, enabled=true
  */
-const $ = new Env('京东试用')
+const $ = new Env('京东试用3')
 const notify = $.isNode() ? require( './sendNotify' ) : '';
 const jdCookieNode = $.isNode() ? require( './jdCookie.js' ) : '';
 let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
