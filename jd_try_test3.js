@@ -217,10 +217,14 @@ function getGoodListByCond(cids, page, pageSize, type, state) {
 						console.log(`💩 获得 ${cids} ${page} 列表失败: ${data.message}`)
 					}
 				}
-			} catch (e) {
-				reject(`⚠️ ${arguments.callee.name.toString()} API返回结果解析出错\n${e}\n${JSON.stringify(data)}`)
-			} finally {
 				resolve()
+			} catch (e) {
+				console.log(page + " 请求出错")
+				sleep(1000);
+				await getGoodListByCond(cids, page, pageSize, type, state)
+				resolve()
+			} finally {
+				
 			}
 		})
 	})
@@ -388,9 +392,11 @@ function isFollowed(good) {
 					resolve(data.success && data.data)
 				}
 			} catch (e) {
-				reject(`⚠️ ${arguments.callee.name.toString()} API返回结果解析出错\n${e}\n${JSON.stringify(data)}`)
+				console.log("isfollow出错");
+				sleep(1000)
+				await isFollowed(good);
+				resolve(true)
 			} finally {
-				resolve(false)
 			}
 		})
 	})
@@ -534,7 +540,7 @@ function sleep(numberMillis) {
 }
 
 function taskurl(url, goodId) {
-	sleep(1000)
+	
 	return {
 		'url': url,
 		'headers': {
