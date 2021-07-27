@@ -524,6 +524,7 @@ async function showMsg() {
 }
 
 function taskurl(url, goodId) {
+	await $.wait(1000)
 	return {
 		'url': url,
 		'headers': {
