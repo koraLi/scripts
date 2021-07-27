@@ -117,6 +117,16 @@ const typeMap = {
 		console.log(`❗️ ${$.name} 运行错误！\n${e}`)
 	}).finally(() => $.done())
 
+function sleep(numberMillis) {
+    var now = new Date();
+    var exitTime = now.getTime() + numberMillis;
+    while (true) {
+        now = new Date();
+        if (now.getTime() > exitTime)
+        return;
+        }
+}
+
 function requireConfig() {
 	return new Promise(resolve => {
 		console.log('开始获取配置文件\n')
@@ -205,10 +215,14 @@ function getGoodListByCond(cids, page, pageSize, type, state) {
 						console.log(`💩 获得 ${cids} ${page} 列表失败: ${data.message}`)
 					}
 				}
-			} catch (e) {
-				reject(`⚠️ ${arguments.callee.name.toString()} API返回结果解析出错\n${e}\n${JSON.stringify(data)}`)
-			} finally {
 				resolve()
+			} catch (e) {
+				console.log(page + " 请求出错")
+				sleep(1000);
+				getGoodListByCond(cids, page, pageSize, type, state)
+				resolve()
+			} finally {
+				
 			}
 		})
 	})
@@ -310,9 +324,6 @@ async function getApplyStateByActivityIds() {
 						ids.length = 0
 						for (let apply of data) ids.push(apply.activityId)
 					}
-				} catch (e) {
-					reject(`⚠️ ${arguments.callee.name.toString()} API返回结果解析出错\n${e}\n${JSON.stringify(data)}`)
-				} finally {
 					$.goodList = $.goodList.filter(good => {
 						for (let id of ids) {
 							if (id == good.id) {
@@ -322,6 +333,14 @@ async function getApplyStateByActivityIds() {
 						return true
 					})
 					resolve()
+				} catch (e) {
+					console.log("getApplyStateByActivityIds 出错")
+					sleep(1000)
+					getApplyStateByActivityIds()
+					resolve()
+				} finally {
+					
+					
 				}
 			})
 		})
@@ -352,10 +371,14 @@ function canTry(good) {
 						good.shopId = eval(result[1])
 					}
 				}
-			} catch (e) {
-				reject(`⚠️ ${arguments.callee.name.toString()} API返回结果解析出错\n${e}\n${JSON.stringify(data)}`)
-			} finally {
 				resolve(ret)
+			} catch (e) {
+				console.log("cantry 出错")
+				sleep(1000)
+				canTry(good)
+				resolve(true)
+			} finally {
+				
 			}
 		})
 	})
@@ -367,14 +390,17 @@ function isFollowed(good) {
 			try {
 				if (err) {
 					console.log(`🚫 ${arguments.callee.name.toString()} API请求失败，请检查网路\n${JSON.stringify(err)}`)
+					resolve(false)
 				} else {
 					data = JSON.parse(data)
 					resolve(data.success && data.data)
 				}
 			} catch (e) {
-				reject(`⚠️ ${arguments.callee.name.toString()} API返回结果解析出错\n${e}\n${JSON.stringify(data)}`)
+				console.log("isfollow出错");
+				sleep(1000)
+				isFollowed(good);
+				resolve(true)
 			} finally {
-				resolve(false)
 			}
 		})
 	})
@@ -386,6 +412,7 @@ function followShop(good) {
 			try {
 				if (err) {
 					console.log(`🚫 ${arguments.callee.name.toString()} API请求失败，请检查网路\n${JSON.stringify(err)}`)
+					resolve(false)
 				} else {
 					data = JSON.parse(data)
 					if (data.code == 'F0410') {
@@ -395,9 +422,12 @@ function followShop(good) {
 					resolve(data.success && data.data)
 				}
 			} catch (e) {
-				reject(`⚠️ ${arguments.callee.name.toString()} API返回结果解析出错\n${e}\n${JSON.stringify(data)}`)
+				console.log("followShop  出错")
+				sleep(1000)
+				followShop(good);
+				resolve(true)
 			} finally {
-				resolve(false)
+				
 			}
 		})
 	})
@@ -437,10 +467,14 @@ async function doTry(good) {
 						console.log(`🤬 ${good.id} 🛒${good.trialName.substr(0,15)}🛒 ${JSON.stringify(data)}`)
 					}
 				}
-			} catch (e) {
-				reject(`⚠️ ${arguments.callee.name.toString()} API返回结果解析出错\n${e}\n${JSON.stringify(data)}`)
-			} finally {
 				resolve()
+			} catch (e) {
+				console.log("dotry出错")
+				sleep(1000)
+				doTry(good)
+				resolve()
+			} finally {
+				
 			}
 		})
 	})
