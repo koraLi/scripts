@@ -221,7 +221,7 @@ function getGoodListByCond(cids, page, pageSize, type, state) {
 			} catch (e) {
 				console.log(page + " 请求出错")
 				sleep(1000);
-				await getGoodListByCond(cids, page, pageSize, type, state)
+				getGoodListByCond(cids, page, pageSize, type, state)
 				resolve()
 			} finally {
 				
@@ -394,7 +394,7 @@ function isFollowed(good) {
 			} catch (e) {
 				console.log("isfollow出错");
 				sleep(1000)
-				await isFollowed(good);
+				isFollowed(good);
 				resolve(true)
 			} finally {
 			}
