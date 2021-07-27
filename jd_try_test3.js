@@ -460,9 +460,12 @@ async function doTry(good) {
 					}
 				}
 			} catch (e) {
-				reject(`⚠️ ${arguments.callee.name.toString()} API返回结果解析出错\n${e}\n${JSON.stringify(data)}`)
-			} finally {
+				console.log("dotry出错")
+				sleep(1000)
+				doTry(good)
 				resolve()
+			} finally {
+				
 			}
 		})
 	})
