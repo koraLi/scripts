@@ -217,10 +217,14 @@ function getGoodListByCond(cids, page, pageSize, type, state) {
 						console.log(`💩 获得 ${cids} ${page} 列表失败: ${data.message}`)
 					}
 				}
-			} catch (e) {
-				reject(`⚠️ ${arguments.callee.name.toString()} API返回结果解析出错\n${e}\n${JSON.stringify(data)}`)
-			} finally {
 				resolve()
+			} catch (e) {
+				console.log(page + " 请求出错")
+				sleep(1000);
+				getGoodListByCond(cids, page, pageSize, type, state)
+				resolve()
+			} finally {
+				
 			}
 		})
 	})
@@ -383,14 +387,17 @@ function isFollowed(good) {
 			try {
 				if (err) {
 					console.log(`🚫 ${arguments.callee.name.toString()} API请求失败，请检查网路\n${JSON.stringify(err)}`)
+					resolve(false)
 				} else {
 					data = JSON.parse(data)
 					resolve(data.success && data.data)
 				}
 			} catch (e) {
-				reject(`⚠️ ${arguments.callee.name.toString()} API返回结果解析出错\n${e}\n${JSON.stringify(data)}`)
+				console.log("isfollow出错");
+				sleep(1000)
+				isFollowed(good);
+				resolve(true)
 			} finally {
-				resolve(false)
 			}
 		})
 	})
@@ -453,10 +460,14 @@ async function doTry(good) {
 						console.log(`🤬 ${good.id} 🛒${good.trialName.substr(0,15)}🛒 ${JSON.stringify(data)}`)
 					}
 				}
-			} catch (e) {
-				reject(`⚠️ ${arguments.callee.name.toString()} API返回结果解析出错\n${e}\n${JSON.stringify(data)}`)
-			} finally {
 				resolve()
+			} catch (e) {
+				console.log("dotry出错")
+				sleep(1000)
+				doTry(good)
+				resolve()
+			} finally {
+				
 			}
 		})
 	})
