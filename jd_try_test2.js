@@ -257,7 +257,7 @@ async function filterGoodList() {
 		{
 			return false
 		}
-		if(good.jdPrice >= args.white_price_limit)
+		if(good.jdPrice >= args.white_price_limit || good.jdPrice == -1)
 		{
 			outer:for (let item of args.whiteList) {
 				for(let keyword of item.split("##"))
