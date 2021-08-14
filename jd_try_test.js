@@ -277,7 +277,7 @@ async function filterGoodList() {
 			outer:for (let item of args.whiteList) {
 				for(let keyword of item.split("##"))
 				{
-					if (good.trialName.indexOf(keyword) == -1) 
+					if (good.trialName.toUpperCase().indexOf(keyword.toUpperCase()) == -1) 
 					{
 						continue outer;
 					}
