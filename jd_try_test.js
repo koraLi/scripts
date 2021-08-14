@@ -268,7 +268,7 @@ async function filterGoodList() {
 		// 3. good 的结束时间大于一天
 		// 4. good 的价格小于最小的限制
 		// 5. good 的试用数量大于 maxSupplyCount, 视为垃圾商品
-		if(!good || good.endTime < now + 10 * 60 * 1000 || good.endTime > oneMoreDay)
+		if(!good || good.endTime < now + 1 * 60 * 1000 || good.endTime > oneMoreDay)
 		{
 			return false
 		}
