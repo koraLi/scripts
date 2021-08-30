@@ -43,7 +43,7 @@ const args = {
 	goodFilters: "教程@流量@软件@英语@辅导@培训小靓美@脚气@卷尺@种子@档案袋@癣@中年@老太太@妇女@私处@孕妇@卫生条@课@培训@阴道@生殖器@肛门@狐臭@鱼饵@钓鱼@网课@网校@电商@手机壳@钢化膜@车载充电器@网络课程@纸尿裤@英语@俄语@四级@六级@四六级@在线网络@在线@阴道炎@宫颈@糜烂@手机膜@看房游@手机卡@油烟机@病人@自慰@手机壳@中老年".split('@'),
 	minPrice: 1000,
 	maxSupplyCount: 100,
-	white_price_limit: 19,
+	white_price_limit: 99,
 	limit_day: 1,
 	useful_account:["13363092721_p","jd_6cfbb2420696a","jd_kwTYWAhdrZPj"]
 }
