@@ -210,8 +210,7 @@ function try_feedsList(tabId, page){
             "page": page,
             "previewTime": ""
         });
-        let option = taskurl_xh('newtry', '
-                                ', body)
+        let option = taskurl_xh('newtry', 'try_feedsList', body)
         $.get(option, (err, resp, data) => {
             try{
                 if(err){
