@@ -98,13 +98,12 @@ let args_xh = {
                     await $.notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
                     continue
                 }
-                let size = 1;
-                for(var i = 1; i <= 16; i++)
+                for(var j = 1; j <= 16; j++)
                 {
                     var size = 1;
                     while(trialActivityIdList.length < args_xh.maxLength){
                         console.log(`\n正在进行第 ${size} 次获取试用商品\n`)
-                        await try_feedsList(i, size++)   //这个是一点进京东试用就显示的页面，默认为精选页面
+                        await try_feedsList(j, size++)   //这个是一点进京东试用就显示的页面，默认为精选页面
                         if($.totalPages == -1){
                             break;
                         }
