@@ -205,8 +205,12 @@ function requireConfig() {
 
 function getGoodListByCond(cids, page, pageSize, type, state) {
 	return new Promise((resolve, reject) => {
-		let option = taskurl(`${selfDomain}/activity/list?pb=1&cids=${cids}&page=${page}&pageSize=${pageSize}&type=${type}&state=${state}`)
-		delete option.headers['Cookie']
+		const body = JSON.stringify({
+		    "tabId": `${cids}`,
+		    "page": page,
+		    "previewTime": ""
+		});
+		let option = taskurl_xh('newtry', 'try_feedsList', body)
 		$.get(option, (err, resp, data) => {
 			try {
 				if (err) {
@@ -215,7 +219,7 @@ function getGoodListByCond(cids, page, pageSize, type, state) {
 					data = JSON.parse(data)
 					if (data.success) {
 						$.totalPages = data.data.pages
-						allGoodList = allGoodList.concat(data.data.data)
+						allGoodList = allGoodList.concat(data.data.feedList)
 					} else {
 						console.log(`💩 获得 ${cids} ${page} 列表失败: ${data.message}`)
 					}
@@ -233,17 +237,42 @@ function getGoodListByCond(cids, page, pageSize, type, state) {
 	})
 }
 
+const URL = 'https://api.m.jd.com/client.action';
+
+function taskurl_xh(appid, functionId, body = JSON.stringify({})){
+    return {
+        "url": `${URL}?appid=${appid}&functionId=${functionId}&clientVersion=10.1.2&client=wh5&body=${encodeURIComponent(body)}`,
+        'headers': {
+            'Host': 'api.m.jd.com',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Cookie': $.cookie,
+            'Connection': 'keep-alive',
+            'UserAgent': 'jdapp;iPhone;10.1.2;15.0;ff2caa92a8529e4788a34b3d8d4df66d9573f499;network/wifi;model/iPhone13,4;addressid/2074196292;appBuild/167802;jdSupportDarkMode/1;Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1',
+            'Accept-Language': 'zh-cn',
+            'Referer': 'https://prodev.m.jd.com/'
+        },
+    }
+}
+
 async function getGoodList() {
-	if (args.cidsList.length === 0) args.cidsList.push("全部商品")
-	if (args.typeList.length === 0) args.typeList.push("全部试用")
-	for (let cidsKey of args.cidsList) {
-		for (let typeKey of args.typeList) {
-			if (!cidsMap.hasOwnProperty(cidsKey) || !typeMap.hasOwnProperty(typeKey)) continue
-			console.log(`⏰ 获取 ${cidsKey} ${typeKey} 商品列表`)
-			$.totalPages = 1
-			for (let page = 1; page <= $.totalPages; page++) {
-				await getGoodListByCond(cidsMap[cidsKey], page, args.pageSize, typeMap[typeKey], '0')
-			}
+// 	if (args.cidsList.length === 0) args.cidsList.push("全部商品")
+// 	if (args.typeList.length === 0) args.typeList.push("全部试用")
+// 	for (let cidsKey of args.cidsList) {
+// 		for (let typeKey of args.typeList) {
+// 			if (!cidsMap.hasOwnProperty(cidsKey) || !typeMap.hasOwnProperty(typeKey)) continue
+// 			console.log(`⏰ 获取 ${cidsKey} ${typeKey} 商品列表`)
+// 			$.totalPages = 1
+// 			for (let page = 1; page <= $.totalPages; page++) {
+// 				await getGoodListByCond(cidsMap[cidsKey], page, args.pageSize, typeMap[typeKey], '0')
+// 			}
+// 		}
+// 	}
+	for(var i = 1; i <= 16; i++)
+	{
+		console.log(`⏰ 获取 ${i} 商品列表`)
+		$.totalPages = 1
+		for (let page = 1; page <= $.totalPages; page++) {
+			await getGoodListByCond(i, page, args.pageSize, 1, '0')
 		}
 	}
 }
@@ -456,7 +485,14 @@ async function tryGoodList() {
 
 async function doTry(good) {
 	return new Promise((resolve, reject) => {
-		$.get(taskurl(`${selfDomain}/migrate/apply?activityId=${good.id}&source=1&_s=m`, good.id), (err, resp, data) => {
+// $.get(taskurl(`${selfDomain}/migrate/apply?activityId=${good.id}&source=1&_s=m`, good.id), (err, resp, data) => {
+		const body = JSON.stringify({
+		    "activityId": activityId,
+		    "previewTime": ""
+		});
+		let option = taskurl_xh('newtry', 'try_apply', body)
+
+		$.get(option, (err, resp, data) => {
 			try {
 				if (err) {
 					console.log(`🚫 ${arguments.callee.name.toString()} API请求失败，请检查网路\n${JSON.stringify(err)}`)
