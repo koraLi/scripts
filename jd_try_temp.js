@@ -100,16 +100,18 @@ let args_xh = {
                 }
                 for(var j = 1; j <= 16; j++)
                 {
+                    $.tableBreak = false;
                     var size = 1;
                     while(trialActivityIdList.length < args_xh.maxLength){
                         console.log(`\n正在进行第 ${size} 次获取试用商品\n`)
                         await try_feedsList(j, size++)   //这个是一点进京东试用就显示的页面，默认为精选页面
-                        if($.totalPages == -1){
+                        if($.tableBreak){
                             break;
                         }
                         console.log(`间隔延时中，请等待 ${args_xh.applyInterval} ms`)
                         await $.wait(100);
                     }
+                    console.log(11111)
                 }
                 
                 console.log("正在执行试用申请...")
@@ -201,7 +203,8 @@ function try_feedsList(tabId, page){
     return new Promise((resolve, reject) => {
         if(page > $.totalPages){
             console.log("请求页数错误")
-            $.totalPages = -1;
+            $.tableBreak = true;
+            resolve()
             return;
         }
         const body = JSON.stringify({
@@ -236,9 +239,9 @@ function try_feedsList(tabId, page){
                                                 console.log(`商品被过滤，已申请试用人数大于预设人数 \n`)
                                                 break;
                                             }
-                                            if(parseFloat(data.data.feedList[i].trialPrice) < args_xh.trialPrice){
+                                            if(parseFloat(data.data.feedList[i].jdPrice) < args_xh.trialPrice){
                                                 $.isPush = false;
-                                                console.log(`商品被过滤，期待价格高于预设价格 \n`)
+                                                console.log(`商品被过滤，期待价格低于预设价格 \n`)
                                                 break;
                                             }
                                             if(data.data.feedList[i].skuTitle.indexOf(filters) !== -1){
