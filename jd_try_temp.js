@@ -167,7 +167,7 @@ let args_xh = {
                 }
                 if(trialActivityIdList.length < args_xh.maxLength){
                     console.log(`间隔等待中，请等待 2 秒\n`)
-                    await $.wait(100);
+                    await $.wait(1000);
                 }
             }
             if($.isForbidden === false && $.isLimit === false){
